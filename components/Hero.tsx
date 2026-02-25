@@ -15,10 +15,10 @@ export default function Hero() {
   return (
     <section className="max-w-7xl mx-auto flex justify-center px-4">
       <div className="w-full">
-        <Card className="border-none shadow-none">
+        <Card className="border-none shadow-none w-full">
           <CardHeader>
             <CardTitle>
-              <h1 className="max-w-2xl mx-auto text-6xl font-bold text-center leading-tight">
+              <h1 className="max-w-3xl mx-auto text-5xl lg:text-6xl font-bold text-center leading-tight">
                 A <UnderlinedText>better</UnderlinedText> way to find the{" "}
                 <TextType
                   className="text-accent"
