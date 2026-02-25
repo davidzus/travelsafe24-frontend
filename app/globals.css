@@ -45,16 +45,6 @@
   --color-accent: var(--accent);
 }
 
-html,
-body {
-  min-width: 100vw;
-  min-height: 100svh;
-}
-
-html {
-  color-scheme: light;
-}
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -137,4 +127,14 @@ html {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html,
+body {
+  min-width: 100%;
+  min-height: 100svh;
+}
+
+html {
+  color-scheme: light;
 }
