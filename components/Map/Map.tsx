@@ -1,12 +1,7 @@
 "use client"
 import {useEffect, useRef} from 'react';
 import L from 'leaflet';
-
 import boundariesHamburgStadtteile from '@/global/boundaries/hamburg/hamburgStadtteile.json';
-
-function onMapClick(e) {
-    alert("You clicked the map at " + e.latlng);
-}
 
 function Map() {
 
@@ -23,14 +18,18 @@ function Map() {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        L.geoJson(boundariesHamburgStadtteile).addTo(map);
-
-        map.on('click', onMapClick);
+        L.geoJson(boundariesHamburgStadtteile, {
+            style: {
+                color: "#FFF",
+            }
+        }).addTo(map);
 
     }, []);
 
     return (
-        <div className="h-full" id="map"></div>
+        <div>
+            <div className="h-full" id="map"></div>
+        </div>
     );
 }
 
