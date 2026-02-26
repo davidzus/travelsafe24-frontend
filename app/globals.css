@@ -139,3 +139,8 @@ body {
 html {
   color-scheme: light;
 }
+
+#map {
+    min-width: 100%;
+    min-height: 90svh;
+}
