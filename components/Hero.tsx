@@ -19,7 +19,7 @@ export default function Hero() {
           <CardHeader>
             <CardTitle>
               <h1 className="max-w-3xl mx-auto text-5xl lg:text-6xl font-bold text-center leading-tight">
-                A <UnderlinedText>better</UnderlinedText> way to find the{" "}
+                A <UnderlinedText>better</UnderlinedText> way to find the{" "} <br className="max-lg:hidden"/>
                 <TextType
                   className="text-accent"
                   text={["right ", "better", "best"]}
