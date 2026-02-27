@@ -1,7 +1,47 @@
 "use client"
 import {useEffect, useRef} from 'react';
 import L from 'leaflet';
-import boundariesHamburgStadtteile from '@/global/boundaries/hamburg/hamburgStadtteile.json';
+import boundariesData from '@/global/boundaries/hamburg/hamburgStadtteile.json';
+import resultData from '@/global/results/evaluation.json';
+
+function getColor(percentage: number) {
+    if (percentage < 50) {
+        return 'red';
+    } else if (percentage < 75) {
+        return 'orange';
+    } else {
+        return 'green';
+    }
+}
+
+function renderResults(map: L.Map) {
+    boundariesData.features.forEach((stadtteil: any) => {
+        if(resultData.hasOwnProperty(stadtteil.properties.Stadtteil)) {
+            //TODO Gradient evaluation
+            let stadtColor = getColor(resultData[stadtteil.properties.Stadtteil].matchingScore)
+            map.addLayer(L.geoJSON(stadtteil, {
+                style: {
+                    color: stadtColor,
+                    fillColor: stadtColor,
+                    opacity: 1
+                }
+            }))
+        }
+        else {
+            map.addLayer(L.geoJSON(stadtteil, {
+                style: {
+                    color: 'gray',
+                    opacity: 0.5,
+                    stroke: false,
+                }
+            }))
+        }
+    })
+
+    Object.entries(resultData).forEach(([key, value]) => {
+        //console.log(key, value);
+    })
+}
 
 function Map() {
 
@@ -17,12 +57,7 @@ function Map() {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
-
-        L.geoJson(boundariesHamburgStadtteile, {
-            style: {
-                color: "#FFF",
-            }
-        }).addTo(map);
+        renderResults(map);
 
     }, []);
 
