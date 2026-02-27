@@ -1,45 +1,43 @@
 {
-  "Allermöhe": {
-    "matchingScore": 100,
-    "criteria": [
-      {
-        "name": "KiTas",
-        "value": 120
-      },
-      {
-        "name": "Unis",
-        "value": 100
-      },
-      {
-       "name": "Clubs",
-        "value": 10
-      }
-    ]
+  "infos": {
+    "city": "Hamburg",
+    "minScore": 50,
+    "maxScore": 87
   },
-  "Bergedorf": {
-    "matchingScore": 70,
-    "criteria": [
-      {
-        "name": "KiTas",
-        "value": 90
-      },
-      {
-        "name": "Unis",
-        "value": 20
-      }
-    ]
-  },
-  "Harburg": {
-    "matchingScore": 20 ,
-    "criteria": [
-      {
-        "name": "KiTas",
-        "value": 90
-      },
-      {
-        "name": "Unis",
-        "value": 20
-      }
-    ]
+  "districts": {
+    "Allermöhe": {
+      "matchingScore": 100,
+      "criteria": [
+        {
+          "name": "KiTas",
+          "value": 120
+        },
+        {
+          "name": "Unis",
+          "value": 100
+        },
+        {
+          "name": "Clubs",
+          "value": 10
+        }
+      ]
+    },
+    "Bergedorf": {
+      "matchingScore": 100,
+      "criteria": [
+        {
+          "name": "KiTas",
+          "value": 120
+        },
+        {
+          "name": "Unis",
+          "value": 100
+        },
+        {
+          "name": "Clubs",
+          "value": 10
+        }
+      ]
+    }
   }
 }
