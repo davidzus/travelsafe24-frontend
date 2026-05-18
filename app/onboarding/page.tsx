@@ -94,7 +94,7 @@ export default function Onboarding() {
       setError("");
     }
     const payload = toBackendPayload(formState);
-    const response = await fetch(`http://localhost:8080/get-matching-scores`, {
+    const response = await fetch(`http://localhost:8080/api/get-matching-scores`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
