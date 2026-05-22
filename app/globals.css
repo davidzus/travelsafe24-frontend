@@ -153,3 +153,76 @@ html {
 .slide-in-right {
   animation: slideInRight 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
+.leaflet-interactive:focus {
+  outline: none;
+}
+
+.leaflet-tooltip.district-tooltip {
+  background: rgba(15, 23, 42, 0.92);
+  color: #fff;
+  border: none;
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  box-shadow:
+          0 10px 25px -5px rgba(0, 0, 0, 0.35),
+          0 0 0 1px rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.leaflet-tooltip.district-tooltip::before {
+  display: none;
+}
+
+.district-tooltip-name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.district-tooltip-score {
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.district-tooltip-score strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.leaflet-tooltip.poi-tooltip {
+  background: rgba(255, 255, 255, 0.97);
+  color: #0f172a;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.625rem;
+  box-shadow:
+          0 6px 16px -3px rgba(0, 0, 0, 0.18),
+          0 0 0 1px rgba(15, 23, 42, 0.06);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.leaflet-tooltip.poi-tooltip::before {
+  display: none;
+}
+
+.poi-tooltip-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+.poi-tooltip-type {
+  margin-top: 0.125rem;
+  font-size: 0.6875rem;
+  color: #64748b;
+}
