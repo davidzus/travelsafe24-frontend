@@ -25,6 +25,8 @@ import {
   formatTypeName,
   getCategoryForType,
 } from "@/global/types/poi";
+import { useListings } from "@/components/Map/useListings";
+import { createListingMarker } from "@/components/Map/listing.utils";
 
 const boundaries = boundariesData as DistrictFeatureCollection;
 
@@ -36,6 +38,7 @@ export default function Map() {
   const highlightedLayerRef = useRef<L.GeoJSON | null>(null);
   const poiLayerRef = useRef<L.LayerGroup | null>(null);
   const poiRendererRef = useRef<L.Canvas | null>(null);
+  const pinLayerRef = useRef<L.LayerGroup | null>(null);
 
   const [selectedLayer, setSelectedLayer] = useState<SelectedLayer | null>(
       null,
@@ -50,6 +53,10 @@ export default function Map() {
   const [pois, setPois] = useState<Poi[]>([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLoadingPois, setIsLoadingPois] = useState(false);
+
+  const selectedDistrict =
+      selectedLayer?.feature?.properties?.Stadtteil ?? null;
+  const { listings } = useListings(selectedDistrict);
 
   useEffect(() => {
     const rawResults = sessionStorage.getItem("onboarding");
@@ -158,6 +165,7 @@ export default function Map() {
       mapRef.current = null;
       poiLayerRef.current = null;
       poiRendererRef.current = null;
+      pinLayerRef.current = null;
       setIsMapReady(false);
     };
   }, [results]);
@@ -234,6 +242,32 @@ export default function Map() {
       poiLayerRef.current?.addLayer(marker);
     });
   }, [pois, isMapReady]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    if (pinLayerRef.current) {
+      pinLayerRef.current.remove();
+      pinLayerRef.current = null;
+    }
+
+    if (listings.length === 0) return;
+
+    const group = L.layerGroup();
+    listings.forEach((listing) => {
+      createListingMarker(listing).addTo(group);
+    });
+    group.addTo(map);
+    pinLayerRef.current = group;
+
+    return () => {
+      if (pinLayerRef.current) {
+        pinLayerRef.current.remove();
+        pinLayerRef.current = null;
+      }
+    };
+  }, [listings]);
 
   const districtName = selectedLayer?.feature?.properties?.Stadtteil ?? "";
   const districtPois = pois.filter((p) => p.district === districtName);

@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import data from "@/data/listings.json";
 import type { ListingsFile } from "@/scripts/scraper/types";
 
-export const dynamic = "force-static";
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const district = searchParams.get("district");
