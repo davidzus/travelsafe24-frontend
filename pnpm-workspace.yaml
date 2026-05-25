@@ -2,3 +2,4 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
   msw: true
+  esbuild: true
