@@ -32,6 +32,31 @@ function formatMeta(listing: Listing): string {
   return parts.join(" · ");
 }
 
+export function createClusterIcon(count: number): L.DivIcon {
+  const size = count < 10 ? 36 : count < 50 ? 44 : 52;
+  const fontSize = count < 10 ? 13 : count < 50 ? 14 : 15;
+  return L.divIcon({
+    className: "listing-cluster",
+    html: `<div style="
+      width: ${size}px; height: ${size}px; border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      background: ${PIN_COLOR};
+      border: 2px solid white;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+      display: flex; align-items: center; justify-content: center;
+    "><span style="
+      transform: rotate(45deg);
+      color: white;
+      font-size: ${fontSize}px;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+      letter-spacing: -0.02em;
+    ">${count}</span></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size],
+  });
+}
+
 export function createListingIcon(): L.DivIcon {
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"

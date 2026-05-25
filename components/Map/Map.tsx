@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
+import "leaflet.markercluster";
 import {
   DistrictFeature,
   DistrictFeatureCollection,
@@ -26,7 +27,7 @@ import {
   getCategoryForType,
 } from "@/global/types/poi";
 import { useListings } from "@/components/Map/useListings";
-import { createListingMarker } from "@/components/Map/listing.utils";
+import { createListingMarker, createClusterIcon } from "@/components/Map/listing.utils";
 
 const boundaries = boundariesData as DistrictFeatureCollection;
 
@@ -38,7 +39,7 @@ export default function Map() {
   const highlightedLayerRef = useRef<L.GeoJSON | null>(null);
   const poiLayerRef = useRef<L.LayerGroup | null>(null);
   const poiRendererRef = useRef<L.Canvas | null>(null);
-  const pinLayerRef = useRef<L.LayerGroup | null>(null);
+  const pinLayerRef = useRef<L.MarkerClusterGroup | null>(null);
 
   const [selectedLayer, setSelectedLayer] = useState<SelectedLayer | null>(
       null,
@@ -254,9 +255,16 @@ export default function Map() {
 
     if (listings.length === 0) return;
 
-    const group = L.layerGroup();
+    const group = L.markerClusterGroup({
+      showCoverageOnHover: false,
+      spiderfyOnMaxZoom: true,
+      maxClusterRadius: 50,
+      disableClusteringAtZoom: 17,
+      iconCreateFunction: (cluster) =>
+        createClusterIcon(cluster.getChildCount()),
+    });
     listings.forEach((listing) => {
-      createListingMarker(listing).addTo(group);
+      group.addLayer(createListingMarker(listing));
     });
     group.addTo(map);
     pinLayerRef.current = group;
