@@ -1,5 +1,5 @@
 import L from "leaflet";
-import type { Listing } from "@/scripts/scraper/types";
+import type { Listing } from "@/global/types/listings";
 
 const PIN_COLOR = "rgb(247,100,94)";
 
