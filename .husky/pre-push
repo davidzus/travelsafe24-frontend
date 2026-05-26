@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+set -e
+
+echo "🧠 Type-checking..."
+pnpm run typecheck
+
+echo "🧹 Linting..."
+pnpm run lint
+
+echo "🧪 Running tests..."
+pnpm test
+
+main_branch='master'
+remote_name="origin"
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+
+if [ "$main_branch" = "$current_branch" ]; then
+  echo "🚫 Direct push to master branch is not allowed!"
+  echo "Please create a future branch and push your changes there!"
+  exit 1
+fi
+
+echo "🔍 Checking if branch is up to date with master branch..."
+
+git fetch "$remote_name" "$main_branch" --quiet
+
+behind_count=$(git rev-list --count HEAD.."$remote_name/$main_branch")
+
+if [ "$behind_count" -gt 0 ]; then
+  echo ""
+  echo "🚫 Push rejected!"
+  echo "📍 Your branch '$current_branch' is $behind_count commit(s) behind '$main_branch'."
+  echo ""
+  echo "👉 Please update your branch first:"
+  echo "   git fetch origin"
+  echo "   git merge origin/$main_branch"
+  echo "   # or"
+  echo "   git rebase origin/$main_branch"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Branch is up to date, proceeding with push..."
+
+exit 0
