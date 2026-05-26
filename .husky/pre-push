@@ -33,8 +33,6 @@ if [ "$behind_count" -gt 0 ]; then
   echo ""
   echo "👉 Please update your branch first:"
   echo "   git fetch origin"
-  echo "   git merge origin/$main_branch"
-  echo "   # or"
   echo "   git rebase origin/$main_branch"
   echo ""
   exit 1
