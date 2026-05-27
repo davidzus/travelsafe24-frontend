@@ -33,9 +33,9 @@ jobs:
         run: pnpm run lint
       - name: Unit tests
         run: pnpm test
-      - name: Build
-        run: pnpm run build
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
       - name: E2E tests
         run: pnpm run test:e2e
+      - name: Build
+        run: pnpm run build
