@@ -25,44 +25,44 @@ jobs:
         run: pnpm run test:e2e
       - name: Build
         run: pnpm run build
-      - name: Upload build output
+      - name: Stage deploy bundle
+        run: |
+          mkdir -p deploy/web
+          cp -r out/. deploy/web/
+          cp nginx.conf deploy/nginx.conf
+      - name: Upload deploy bundle
         uses: actions/upload-artifact@v4
         with:
-          name: build-output
-          path: out/
+          name: deploy
+          path: deploy/
           retention-days: 1
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout nginx config
-        uses: actions/checkout@v6
-        with:
-          sparse-checkout: src/nginx.conf
-          sparse-checkout-cone-mode: false
-      - name: Download build output
+      - name: Download deploy bundle
         uses: actions/download-artifact@v4
         with:
-          name: build-output
-          path: out/
+          name: deploy
+          path: deploy/
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p ${{ secrets.SSH_PORT || 22 }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-      - name: Deploy via rsync
+      - name: Deploy frontend via rsync
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT || 22 }}" \
-            ./out/ \
+            ./deploy/web/ \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
       - name: Copy nginx config
         run: |
           rsync -avz \
             -e "ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT || 22 }}" \
-            src/nginx.conf \
+            ./deploy/nginx.conf \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/nginx.conf
       - name: Apply nginx config
         run: |
