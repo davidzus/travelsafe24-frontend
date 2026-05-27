@@ -44,6 +44,12 @@ jobs:
           name: build-output
           path: out/
 
+      - name: Checkout nginx config
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: src/nginx.conf
+          sparse-checkout-cone-mode: false
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -51,16 +57,24 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p ${{ secrets.SSH_PORT || 22 }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Test SSH connection
-        run: |
-          ssh -vvv -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT || 22 }} \
-          -o StrictHostKeyChecking=no \
-          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-          "echo connected as \$(whoami) on \$(hostname)"
-
       - name: Deploy via rsync
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT || 22 }}" \
             ./out/ \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
+
+      - name: Copy nginx config
+        run: |
+          rsync -avz \
+            -e "ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT || 22 }}" \
+            src/nginx.conf \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/nginx.conf
+
+      - name: Apply nginx config
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT || 22 }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "sudo nginx -t -c /home/${{ secrets.SSH_USER }}/nginx.conf && \
+             sudo cp /home/${{ secrets.SSH_USER }}/nginx.conf /etc/nginx/nginx.conf && \
+             sudo systemctl reload nginx"
