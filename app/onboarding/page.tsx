@@ -23,6 +23,7 @@ import {
   isStepValid,
   toBackendPayload,
 } from "@/components/Onboarding/onboarding.utils";
+import { API_BASE_URL } from "@/global/constants/api.constants";
 
 export default function Onboarding() {
   const router = useRouter();
@@ -94,7 +95,7 @@ export default function Onboarding() {
       setError("");
     }
     const payload = toBackendPayload(formState);
-    const response = await fetch(`http://localhost:8080/api/get-matching-scores`, {
+    const response = await fetch(`${API_BASE_URL}/api/get-matching-scores`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
