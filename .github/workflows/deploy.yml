@@ -68,6 +68,6 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_ed25519 -p ${{ secrets.SSH_PORT || 22 }} \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            "sudo nginx -t -c /home/${{ secrets.SSH_USER }}/nginx.conf && \
-             sudo cp /home/${{ secrets.SSH_USER }}/nginx.conf /etc/nginx/nginx.conf && \
+            "sudo cp /home/${{ secrets.SSH_USER }}/nginx.conf /etc/nginx/conf.d/travelsafe.conf && \
+             sudo nginx -t && \
              sudo systemctl reload nginx"
