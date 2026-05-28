@@ -7,7 +7,7 @@ export default function Header() {
       {/* Logo */}
       <Link href="/">
         <div className="font-bold text-accent text-2xl cursor-pointer">
-          TravelSafe24
+            Stadtteil-Match
         </div>
       </Link>
       {/* Navigation */}
